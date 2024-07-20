@@ -78,14 +78,15 @@ const RoomPage = () => {
       console.log("nego needed incoming")
       const ans = await peer.getAnswer(offer);
       socket.emit("peer:nego:done", { to: from, ans });
+      sendStreams();
     },
     [socket]
   );
 
   const handleNegoNeedFinal = useCallback(async ({ ans }) => {
     await peer.setLocalDescription(ans);
-    sendStreams();
-  }, [sendStreams]);
+  
+  }, []);
 
   useEffect(() => {
     peer.peer.addEventListener("track", async (ev) => {
@@ -122,7 +123,7 @@ const RoomPage = () => {
     <div className="room"> 
       <div className="room-info">
       <h1>Your Meeting Room</h1>
-      <h4>{remoteSocketId ? "Room has member" : "No one in room" }       {remoteSocketId && !remoteStream&& <button onClick={handleCallUser} className="btn btn-light ms-5">Call now!<i class="fa-solid fa-phone" style={{color: "green"}}></i></button>} {myStream &&  <button><i onClick={sendStreams} class="fa-solid fa-video" style={{color:"aliceblue"}}></i></button>}
+      <h4>{remoteSocketId ? "Room has member" : "No one in room" }       {remoteSocketId && !remoteStream&& <button onClick={handleCallUser} className="btn btn-light ms-5">Call now!<i class="fa-solid fa-phone" style={{color: "green"}}></i></button>} {myStream &&  <button><i onClick={sendStreams} class="fa-solid fa-video" ></i></button>}
         </h4>
         
      </div>
