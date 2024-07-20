@@ -62,9 +62,9 @@ const RoomPage = () => {
    async ({ from, ans }) => {
      await peer.setLocalDescription(ans);
       console.log("Call Accepted!");
-      
+      sendStreams();
     },
-    []
+    [sendStreams]
   );
 
   const handleNegoNeeded = useCallback(async () => {
@@ -141,7 +141,8 @@ const RoomPage = () => {
         url={remoteStream}
       />
     </div>
-  )}
+        )}
+        
   {myStream && (
     <div style={{ borderRadius: "30px", overflow: "hidden", width: "300px", height: "220px" } } className="mt-5">
       <ReactPlayer
