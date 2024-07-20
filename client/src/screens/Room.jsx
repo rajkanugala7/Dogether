@@ -26,8 +26,9 @@ const RoomPage = () => {
       video: true,
     });   
     const offer = await peer.getOffer();
-    socket.emit("user:call", { to: remoteSocketId, offer });
     setMyStream(stream);
+    socket.emit("user:call", { to: remoteSocketId, offer });
+    
   }, [remoteSocketId, socket]);
 
 
@@ -48,7 +49,7 @@ const RoomPage = () => {
 
   const sendStreams = useCallback(async () => {
     
-      setIsSend(true)
+      
       for (const track of myStream.getTracks()) {
         await peer.peer.addTrack(track, myStream);
       }
@@ -60,7 +61,6 @@ const RoomPage = () => {
      await peer.setLocalDescription(ans);
       console.log("Call Accepted!");
       sendStreams();
-      setIsSend(true);
     },
     [sendStreams]
   );
@@ -87,15 +87,15 @@ const RoomPage = () => {
 
   const handleNegoNeedFinal = useCallback(async ({ ans }) => {
     await peer.setLocalDescription(ans);
-    sendStreams()
-    setIsSend(true);
-  }, [sendStreams]);
+   
+  }, []);
 
   useEffect(() => {
     peer.peer.addEventListener("track", async (ev) => {
       const remoteStream = ev.streams;
       console.log("GOT TRACKS!!");
       setRemoteStream(remoteStream[0]);
+      sendStreams();
       
     });
   }, []);
