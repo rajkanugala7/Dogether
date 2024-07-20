@@ -18,7 +18,7 @@ const RoomPage = () => {
     
 
   useEffect(() => {
-    if (remoteStream && !isSend)
+    if (remoteSocketId&& myStream && !isSend)
     {
       sendStreams();
       
@@ -94,8 +94,9 @@ const RoomPage = () => {
 
   const handleNegoNeedFinal = useCallback(async ({ ans }) => {
     await peer.setLocalDescription(ans);
-   
-  }, []);
+    sendStreams()
+    setIsSend(true);
+  }, [sendStreams]);
 
   useEffect(() => {
     peer.peer.addEventListener("track", async (ev) => {
