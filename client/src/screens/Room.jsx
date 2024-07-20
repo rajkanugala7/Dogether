@@ -10,12 +10,19 @@ const RoomPage = () => {
   const [remoteStream, setRemoteStream] = useState();
   const [isSend, setIsSend] = useState(false);
   const [iscall, setIsCall] = useState(false);
+  const [negodone, setNegoDone] = useState(false);
 
   const handleUserJoined = useCallback(({ email, id }) => {
     console.log(`Email ${email} joined room`);
     setRemoteSocketId(id);
   }, []);
     
+  useEffect(() => {
+    if (negodone)
+    {
+      sendStreams();
+    }
+  })
 
   const handleCallUser = useCallback(async () => {
     setIsCall(true);
@@ -78,15 +85,17 @@ const RoomPage = () => {
       console.log("nego needed incoming")
       const ans = await peer.getAnswer(offer);
       socket.emit("peer:nego:done", { to: from, ans });
-      sendStreams();
+      setNegoDone();
     },
-    [socket,sendStreams]
+    [socket]
   );
 
   const handleNegoNeedFinal = useCallback(async ({ ans }) => {
     await peer.setLocalDescription(ans);
-  
+    
   }, []);
+
+
 
   useEffect(() => {
     peer.peer.addEventListener("track", async (ev) => {
