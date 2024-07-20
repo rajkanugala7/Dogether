@@ -141,7 +141,7 @@ const RoomPage = () => {
     <div style={{ borderRadius: "30px", overflow: "hidden", width: "700px", height: "500px" }}>
       <ReactPlayer
         playing
-        muted
+        
         height="100%"
         width="100%"
         url={remoteStream}
@@ -150,7 +150,8 @@ const RoomPage = () => {
   )}
   {myStream && (
     <div style={{ borderRadius: "30px", overflow: "hidden", width: "300px", height: "220px" } } className="mt-5">
-      <ReactPlayer
+            <ReactPlayer
+              muted
         playing={true}
         height="100%"
         width="100%"
