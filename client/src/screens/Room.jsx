@@ -80,7 +80,7 @@ const RoomPage = () => {
       socket.emit("peer:nego:done", { to: from, ans });
       sendStreams();
     },
-    [socket]
+    [socket,sendStreams]
   );
 
   const handleNegoNeedFinal = useCallback(async ({ ans }) => {
