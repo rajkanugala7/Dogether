@@ -66,7 +66,8 @@ const RoomPage = () => {
    async ({ from, ans }) => {
      await peer.setLocalDescription(ans);
       console.log("Call Accepted!");
-   
+      sendStreams();
+      setIsSend(true);
     },
     []
   );
@@ -93,14 +94,15 @@ const RoomPage = () => {
 
   const handleNegoNeedFinal = useCallback(async ({ ans }) => {
     await peer.setLocalDescription(ans);
-   sendStreams()
-  }, [sendStreams]);
+   
+  }, []);
 
   useEffect(() => {
     peer.peer.addEventListener("track", async (ev) => {
       const remoteStream = ev.streams;
       console.log("GOT TRACKS!!");
       setRemoteStream(remoteStream[0]);
+      
     });
   }, []);
 
