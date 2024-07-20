@@ -62,7 +62,7 @@ const RoomPage = () => {
       sendStreams();
       setIsSend(true);
     },
-    []
+    [sendStreams]
   );
 
   const handleNegoNeeded = useCallback(async () => {
