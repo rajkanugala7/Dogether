@@ -23,7 +23,7 @@ const RoomPage = () => {
       sendStreams();
       setIsSend(true)
     }
-  },[isSend,remoteStream])
+  },[isSend,remoteStream,sendStreams])
 
   const handleCallUser = useCallback(async () => {
     setIsCall(true);
