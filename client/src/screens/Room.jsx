@@ -89,8 +89,8 @@ const RoomPage = () => {
 
   const handleNegoNeedFinal = useCallback(async ({ ans }) => {
     await peer.setLocalDescription(ans);
-    sendStreams();
-  }, [sendStreams]);
+   
+  }, []);
 
   useEffect(() => {
     peer.peer.addEventListener("track", async (ev) => {
