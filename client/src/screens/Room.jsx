@@ -52,9 +52,9 @@ const RoomPage = () => {
     [socket]
   );
 
-  const sendStreams = useCallback(() => {
+  const sendStreams = useCallback(async() => {
     for (const track of myStream.getTracks()) {
-      peer.peer.addTrack(track, myStream);
+     await peer.peer.addTrack(track, myStream);
     }
   }, [myStream]);
 
@@ -89,8 +89,8 @@ const RoomPage = () => {
 
   const handleNegoNeedFinal = useCallback(async ({ ans }) => {
     await peer.setLocalDescription(ans);
-   
-  }, []);
+   sendStreams()
+  }, [sendStreams]);
 
   useEffect(() => {
     peer.peer.addEventListener("track", async (ev) => {
