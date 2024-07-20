@@ -52,9 +52,9 @@ const RoomPage = () => {
     [socket]
   );
 
-  const sendStreams = useCallback(async() => {
+  const sendStreams = useCallback(() => {
     for (const track of myStream.getTracks()) {
-     await peer.peer.addTrack(track, myStream);
+      peer.peer.addTrack(track, myStream);
     }
   }, [myStream]);
 
