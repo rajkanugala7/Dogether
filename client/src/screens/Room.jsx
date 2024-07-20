@@ -17,7 +17,13 @@ const RoomPage = () => {
   }, []);
     
 
-  
+  useEffect(() => {
+    if (remoteStream && !isSend)
+    {
+      sendStreams();
+      setIsSend(true)
+    }
+  },[isSend,remoteStream])
 
   const handleCallUser = useCallback(async () => {
     setIsCall(true);
@@ -26,9 +32,8 @@ const RoomPage = () => {
       video: true,
     });   
     const offer = await peer.getOffer();
-    setMyStream(stream);
     socket.emit("user:call", { to: remoteSocketId, offer });
-    
+    setMyStream(stream);
   }, [remoteSocketId, socket]);
 
 
@@ -48,12 +53,10 @@ const RoomPage = () => {
   );
 
   const sendStreams = useCallback(async () => {
-    
-      
-      for (const track of myStream.getTracks()) {
-        await peer.peer.addTrack(track, myStream);
-      }
-    
+    setIsSend(true);
+    for (const track of myStream.getTracks()) {
+     await peer.peer.addTrack(track, myStream);
+    }
   }, [myStream]);
 
   const handleCallAccepted = useCallback(
@@ -66,7 +69,6 @@ const RoomPage = () => {
   );
 
   const handleNegoNeeded = useCallback(async () => {
-    console.log("nego:needed")
     const offer = await peer.getOffer();
     socket.emit("peer:nego:needed", { offer, to: remoteSocketId });
   }, [remoteSocketId, socket]);
@@ -80,7 +82,6 @@ const RoomPage = () => {
 
   const handleNegoNeedIncomming = useCallback(
     async ({ from, offer }) => {
-      console.log("nego incoming")
       const ans = await peer.getAnswer(offer);
       socket.emit("peer:nego:done", { to: from, ans });
     },
@@ -89,16 +90,14 @@ const RoomPage = () => {
 
   const handleNegoNeedFinal = useCallback(async ({ ans }) => {
     await peer.setLocalDescription(ans);
-   
-  }, []);
+    sendStreams();
+  }, [sendStreams]);
 
   useEffect(() => {
     peer.peer.addEventListener("track", async (ev) => {
       const remoteStream = ev.streams;
       console.log("GOT TRACKS!!");
       setRemoteStream(remoteStream[0]);
-      sendStreams();
-      
     });
   }, []);
 
@@ -137,21 +136,19 @@ const RoomPage = () => {
     <div style={{ borderRadius: "30px", overflow: "hidden", width: "700px", height: "500px" }}>
       <ReactPlayer
         playing
-        
+        muted
         height="100%"
         width="100%"
         url={remoteStream}
       />
     </div>
-        )}
-        
+  )}
   {myStream && (
     <div style={{ borderRadius: "30px", overflow: "hidden", width: "300px", height: "220px" } } className="mt-5">
       <ReactPlayer
         playing={true}
         height="100%"
-              width="100%"
-              muted
+        width="100%"
         url={myStream}
       />
           </div>
