@@ -17,13 +17,7 @@ const RoomPage = () => {
     setRemoteSocketId(id);
   }, []);
     
-  useEffect(() => {
-    if (negodone)
-    {
-      sendStreams();
-    }
-  })
-
+ 
   const handleCallUser = useCallback(async () => {
     setIsCall(true);
     const stream = await navigator.mediaDevices.getUserMedia({
@@ -92,7 +86,7 @@ const RoomPage = () => {
 
   const handleNegoNeedFinal = useCallback(async ({ ans }) => {
     await peer.setLocalDescription(ans);
-    setNegoDone(true);
+    
   }, []);
 
 
