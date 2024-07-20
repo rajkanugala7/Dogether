@@ -21,6 +21,7 @@ const RoomPage = () => {
     if (remoteStream && !isSend)
     {
       sendStreams();
+      
       setIsSend(true)
     }
   },[isSend,remoteStream,sendStreams])
@@ -53,12 +54,12 @@ const RoomPage = () => {
   );
 
   const sendStreams = useCallback(async () => {
-    if (!isSend) {
+    
       setIsSend(true)
       for (const track of myStream.getTracks()) {
         await peer.peer.addTrack(track, myStream);
       }
-    }
+    
   }, [myStream]);
 
   const handleCallAccepted = useCallback(
