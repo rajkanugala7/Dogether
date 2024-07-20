@@ -66,6 +66,7 @@ const RoomPage = () => {
   );
 
   const handleNegoNeeded = useCallback(async () => {
+    console.log("nego:needed")
     const offer = await peer.getOffer();
     socket.emit("peer:nego:needed", { offer, to: remoteSocketId });
   }, [remoteSocketId, socket]);
@@ -79,6 +80,7 @@ const RoomPage = () => {
 
   const handleNegoNeedIncomming = useCallback(
     async ({ from, offer }) => {
+      console.log("nego incoming")
       const ans = await peer.getAnswer(offer);
       socket.emit("peer:nego:done", { to: from, ans });
     },
