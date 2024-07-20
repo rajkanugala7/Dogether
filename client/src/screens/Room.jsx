@@ -17,14 +17,7 @@ const RoomPage = () => {
   }, []);
     
 
-  useEffect(() => {
-    if (remoteSocketId&& myStream && !isSend)
-    {
-      sendStreams();
-      
-      setIsSend(true)
-    }
-  },[isSend,remoteStream,sendStreams])
+  
 
   const handleCallUser = useCallback(async () => {
     setIsCall(true);
